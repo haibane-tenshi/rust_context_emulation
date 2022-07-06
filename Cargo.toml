@@ -1,0 +1,96 @@
+[package]
+name = "rust_context_emulation"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+[[example]]
+name = "gat_01"
+path = "examples/gat/01_early_bound_lifetime.rs"
+
+[[example]]
+name = "gat_02"
+path = "examples/gat/02_late_bound_lifetime.rs"
+
+[[example]]
+name = "gat_03"
+path = "examples/gat/03_late_bound_external_lifetime.rs"
+
+[[example]]
+name = "gat_04"
+path = "examples/gat/04_cx_unification_and_split.rs"
+
+[[example]]
+name = "gat_05"
+path = "examples/gat/05_capability_access.rs"
+
+[[example]]
+name = "gat_06"
+path = "examples/gat/06_local_capability.rs"
+
+[[example]]
+name = "gat_trait01"
+path = "examples/gat/trait01_emulation_basics.rs"
+
+[[example]]
+name = "gat_trait02"
+path = "examples/gat/trait02_using_wildcard.rs"
+
+[[example]]
+name = "gat_trait03"
+path = "examples/gat/trait03_dyn_cxfn.rs"
+
+[[example]]
+name = "gat_adv01"
+path = "examples/gat/adv01_dst_capability.rs"
+
+[[example]]
+name = "gat_adv02"
+path = "examples/gat/adv02_generic_capability.rs"
+
+[[example]]
+name = "input_01"
+path = "examples/input/01_early_bound_lifetime.rs"
+
+[[example]]
+name = "input_02"
+path = "examples/input/02_late_bound_lifetime.rs"
+
+[[example]]
+name = "input_03"
+path = "examples/input/03_late_bound_external_lifetime.rs"
+
+[[example]]
+name = "input_04"
+path = "examples/input/04_cx_unification_and_split.rs"
+
+[[example]]
+name = "input_05"
+path = "examples/input/05_capability_access.rs"
+
+[[example]]
+name = "input_06"
+path = "examples/input/06_local_capability.rs"
+
+[[example]]
+name = "input_trait01"
+path = "examples/input/trait01_emulation_basics.rs"
+
+[[example]]
+name = "input_trait02"
+path = "examples/input/trait02_using_wildcard.rs"
+
+[[example]]
+name = "input_trait03"
+path = "examples/input/trait03_dyn_cxfn.rs"
+
+[[example]]
+name = "input_adv01"
+path = "examples/input/adv01_dst_capability.rs"
+
+[[example]]
+name = "input_adv02"
+path = "examples/input/adv02_generic_capability.rs"

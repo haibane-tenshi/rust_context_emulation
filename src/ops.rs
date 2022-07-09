@@ -11,6 +11,19 @@ pub trait Reborrow {
     fn reborrow(&mut self) -> Self::Output<'_>;
 }
 
+/// Part of [`Reborrow2`] mechanism.
+pub trait Reborrow2Lifetime<'this, ImplicitBound = &'this Self> {
+    type Output;
+}
+
+/// Another reborrow emulation trait.
+///
+/// This one opts to emulate GATs using approach highlighted by Sabrina Jewson in this post:
+/// https://sabrinajewson.org/blog/the-better-alternative-to-lifetime-gats#the-better-gats
+pub trait Reborrow2: for<'this> Reborrow2Lifetime<'this> {
+    fn reborrow(&mut self) -> <Self as Reborrow2Lifetime<'_>>::Output;
+}
+
 /// Coerce to `Other` type.
 ///
 /// Coerce trait by default only supports only one coercion [permitted](https://doc.rust-lang.org/stable/reference/type-coercions.html?highlight=coercion#coercion-types)

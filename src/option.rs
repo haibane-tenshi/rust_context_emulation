@@ -72,6 +72,32 @@ where
     }
 }
 
+impl<'s> Reborrow2Lifetime<'s> for None {
+    type Output = Self;
+}
+
+impl Reborrow2 for None {
+    fn reborrow(&mut self) -> <Self as Reborrow2Lifetime<'_>>::Output {
+        None
+    }
+}
+
+impl<'s, T> Reborrow2Lifetime<'s> for Some<T>
+where
+    T: Reborrow2Lifetime<'s>,
+{
+    type Output = Some<<T as Reborrow2Lifetime<'s>>::Output>;
+}
+
+impl<T> Reborrow2 for Some<T>
+where
+    T: Reborrow2,
+{
+    fn reborrow(&mut self) -> <Self as Reborrow2Lifetime<'_>>::Output {
+        Some(self.0.reborrow())
+    }
+}
+
 impl UnifyOp<None> for None {
     type Output = Self;
 }

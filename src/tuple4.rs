@@ -124,6 +124,38 @@ where
     }
 }
 
+impl<'s, T0, T1, T2, T3> Reborrow2Lifetime<'s> for Tuple4<T0, T1, T2, T3>
+where
+    T0: Reborrow2Lifetime<'s>,
+    T1: Reborrow2Lifetime<'s>,
+    T2: Reborrow2Lifetime<'s>,
+    T3: Reborrow2Lifetime<'s>,
+{
+    type Output = Tuple4<
+        <T0 as Reborrow2Lifetime<'s>>::Output,
+        <T1 as Reborrow2Lifetime<'s>>::Output,
+        <T2 as Reborrow2Lifetime<'s>>::Output,
+        <T3 as Reborrow2Lifetime<'s>>::Output,
+    >;
+}
+
+impl<T0, T1, T2, T3> Reborrow2 for Tuple4<T0, T1, T2, T3>
+where
+    T0: Reborrow2,
+    T1: Reborrow2,
+    T2: Reborrow2,
+    T3: Reborrow2,
+{
+    fn reborrow(&mut self) -> <Self as Reborrow2Lifetime<'_>>::Output {
+        Tuple4(
+            self.0.reborrow(),
+            self.1.reborrow(),
+            self.2.reborrow(),
+            self.3.reborrow(),
+        )
+    }
+}
+
 impl<AT0, AT1, AT2, AT3, BT0, BT1, BT2, BT3> UnifyOp<Tuple4<BT0, BT1, BT2, BT3>>
     for Tuple4<AT0, AT1, AT2, AT3>
 where

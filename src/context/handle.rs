@@ -58,6 +58,26 @@ where
     }
 }
 
+impl<'s, 'a, T> Reborrow2Lifetime<'s> for HandleRef<'a, T> {
+    type Output = Self;
+}
+
+impl<'a, T> Reborrow2 for HandleRef<'a, T> {
+    fn reborrow(&mut self) -> <Self as Reborrow2Lifetime<'_>>::Output {
+        *self
+    }
+}
+
+impl<'s, 'a, T> Reborrow2Lifetime<'s> for HandleMut<'a, T> {
+    type Output = HandleMut<'s, T>;
+}
+
+impl<'a, T> Reborrow2 for HandleMut<'a, T> {
+    fn reborrow(&mut self) -> <Self as Reborrow2Lifetime<'_>>::Output {
+        HandleMut::new(&mut *self.0)
+    }
+}
+
 impl<'a, T> Coerce<HandleRef<'a, T>> for HandleRef<'a, T> {
     fn coerce(self) -> HandleRef<'a, T> {
         self

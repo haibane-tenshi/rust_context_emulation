@@ -114,6 +114,22 @@ where
     }
 }
 
+impl<'s, Tuple> Reborrow2Lifetime<'s> for Store<Tuple>
+where
+    Tuple: Reborrow2Lifetime<'s>,
+{
+    type Output = Store<<Tuple as Reborrow2Lifetime<'s>>::Output>;
+}
+
+impl<Tuple> Reborrow2 for Store<Tuple>
+where
+    Tuple: Reborrow2,
+{
+    fn reborrow(&mut self) -> <Self as Reborrow2Lifetime<'_>>::Output {
+        Store(self.0.reborrow())
+    }
+}
+
 /// Extract shared reference to a capability.
 ///
 /// **Note** that resulting reference is not bound to lifetime of `self`.

@@ -4,6 +4,7 @@ use crate::ops::*;
 use crate::option;
 use crate::reference::{Mutable, Shared};
 
+#[derive(Copy, Clone)]
 pub struct Handle<T>(T);
 
 pub type HandleRef<'a, T> = Handle<&'a T>;

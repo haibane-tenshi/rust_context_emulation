@@ -9,6 +9,7 @@ use crate::Capability;
 use crate::context::handle::{HandleMut, HandleRef};
 
 /// Storage for handles.
+#[derive(Copy, Clone)]
 pub struct Store<Tuple>(Tuple);
 
 impl<T> Store<T> {

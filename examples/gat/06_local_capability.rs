@@ -1,6 +1,7 @@
+//! Illustrate how to locally add capability into the context.
+
 #![feature(generic_associated_types)]
 #![allow(non_camel_case_types)]
-#![allow(clippy::drop_ref)]
 
 use rust_context_emulation::prelude_gat::*;
 

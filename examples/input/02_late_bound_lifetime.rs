@@ -1,19 +1,25 @@
+//! Illustrate desugaring of a function with late-bound capability lifetime.
+
 #![feature(generic_associated_types)]
 #![allow(non_camel_case_types)]
 
 use rust_context_emulation::prelude_input::*;
 
 fn main() {
-    let data_store = __hidden_str("treasure".to_string());
-    let mut cx = EmptyStore::new().push(&data_store);
-
-    let equals = is_aliens::default().cx_call((), cx.reborrow());
-
-    assert!(!equals);
-
-    let equals = compare_to::default().cx_call(("treasure",), cx.reborrow());
+    let mut hidden_str = __hidden_str("treasure".to_string());
+    let equals = {
+        let cx = EmptyStore::new().push(&hidden_str);
+        compare_to::default().cx_call(("treasure",), cx)
+    };
 
     assert!(equals);
+
+    {
+        let cx = EmptyStore::new().push(&mut hidden_str);
+        append::default().cx_call((), cx);
+    }
+
+    assert_eq!(hidden_str.as_ref(), "treasure is stolen!");
 }
 
 struct __hidden_str(String);
@@ -65,25 +71,26 @@ impl<'_0, '_1, '_2, '_3> CxFn<'_0, '_1, '_2, '_3, (&str,)> for compare_to {
 }
 
 #[derive(Default)]
-struct is_aliens;
+struct append;
 
-impl<'_0, '_1, '_2, '_3> CxFnOnce<'_0, '_1, '_2, '_3, ()> for is_aliens {
-    type Output = bool;
-    type Context = <compare_to as CxFnOnce<'_0, '_1, '_2, '_3, (&'static str,)>>::Context;
+impl<'_0, '_1, '_2, '_3> CxFnOnce<'_0, '_1, '_2, '_3, ()> for append {
+    type Output = ();
+    type Context = MakeContext<(Select<'_0, '_1, '_2, '_3, Mutable, __hidden_str>,)>;
 
     fn cx_call_once(mut self, args: (), cx: Self::Context) -> Self::Output {
         self.cx_call_mut(args, cx)
     }
 }
 
-impl<'_0, '_1, '_2, '_3> CxFnMut<'_0, '_1, '_2, '_3, ()> for is_aliens {
+impl<'_0, '_1, '_2, '_3> CxFnMut<'_0, '_1, '_2, '_3, ()> for append {
     fn cx_call_mut(&mut self, args: (), cx: Self::Context) -> Self::Output {
         self.cx_call(args, cx)
     }
 }
 
-impl<'_0, '_1, '_2, '_3> CxFn<'_0, '_1, '_2, '_3, ()> for is_aliens {
-    fn cx_call(&self, (): (), cx: Self::Context) -> Self::Output {
-        compare_to::default().cx_call(("aliens",), cx)
+impl<'_0, '_1, '_2, '_3> CxFn<'_0, '_1, '_2, '_3, ()> for append {
+    fn cx_call(&self, (): (), mut cx: Self::Context) -> Self::Output {
+        let hidden_str = cx.extract_mut::<__hidden_str>();
+        *hidden_str += " is stolen!";
     }
 }

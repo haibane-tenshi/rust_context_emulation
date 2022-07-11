@@ -1,3 +1,5 @@
+//! Illustrate construction and implementation of traits containing contextual methods.
+
 #![feature(generic_associated_types)]
 #![allow(non_camel_case_types)]
 

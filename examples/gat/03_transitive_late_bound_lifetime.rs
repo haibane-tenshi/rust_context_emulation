@@ -1,3 +1,6 @@
+//! Illustrate construction of a function calling other functions
+//! which rely on late-bound capability lifetimes.
+
 #![feature(generic_associated_types)]
 #![allow(non_camel_case_types)]
 

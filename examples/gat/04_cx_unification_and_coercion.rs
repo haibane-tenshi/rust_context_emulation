@@ -1,3 +1,5 @@
+//! Illustrate process of unification and coercion when multiple functions are called.
+
 #![feature(generic_associated_types)]
 #![allow(non_camel_case_types)]
 
@@ -8,7 +10,7 @@ fn main() {
     let hidden_str = __hidden_str("aliens".to_string());
     let cx = EmptyStore::new().push(&data_store).push(&hidden_str);
 
-    let equal = useful_work::default().cx_call((), cx);
+    let equal = call_two::default().cx_call((), cx);
     assert!(equal);
 }
 
@@ -44,9 +46,9 @@ impl Capability for __hidden_str {
 
 // Do some questionable things.
 #[derive(Default)]
-struct useful_work;
+struct call_two;
 
-impl CxFnOnce<()> for useful_work {
+impl CxFnOnce<()> for call_two {
     type Output<'_0, '_1, '_2, '_3> = bool;
     // Since we want to call two functions, we also need to satisfy context requirements for both.
     // This can be achieved by unifying their contexts.
@@ -65,7 +67,7 @@ impl CxFnOnce<()> for useful_work {
     }
 }
 
-impl CxFnMut<()> for useful_work {
+impl CxFnMut<()> for call_two {
     fn cx_call_mut<'_0, '_1, '_2, '_3>(
         &mut self,
         args: (),
@@ -75,7 +77,7 @@ impl CxFnMut<()> for useful_work {
     }
 }
 
-impl CxFn<()> for useful_work {
+impl CxFn<()> for call_two {
     fn cx_call<'_0, '_1, '_2, '_3>(
         &self,
         (): (),
@@ -113,7 +115,6 @@ impl CxFnOnce<()> for first {
     type Output<'_0, '_1, '_2, '_3> =
         Option<SelectT<'_0, '_1, '_2, '_3, Shared, usize, __data_store>>;
 
-    // Desired lifetime is already known, so extra lifetimes can just be ignored.
     type Context<'_0, '_1, '_2, '_3> =
         MakeContext<(Select<'_0, '_1, '_2, '_3, Shared, __data_store>,)>;
 

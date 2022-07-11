@@ -1,6 +1,7 @@
+//! Illustrate capability usage in presence of other function calls.
+
 #![feature(generic_associated_types)]
 #![allow(non_camel_case_types)]
-#![allow(clippy::drop_ref)]
 
 use rust_context_emulation::prelude_input::*;
 

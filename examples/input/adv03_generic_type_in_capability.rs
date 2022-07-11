@@ -1,3 +1,5 @@
+//! Illustrate usage of generic types in capability.
+
 #![feature(generic_associated_types)]
 #![feature(allocator_api)]
 #![allow(non_camel_case_types)]
@@ -50,7 +52,7 @@ where
 }
 
 // Note how generic from capability by necessity leaks into function type.
-struct vec_new<'alloc, T, A>(PhantomData<T>, PhantomData<&'alloc A>)
+struct vec_new<'alloc, T, A>(PhantomData<fn(T, &'alloc A)>)
 where
     A: Allocator + ?Sized;
 
@@ -91,6 +93,6 @@ where
     A: Allocator + ?Sized,
 {
     fn default() -> Self {
-        vec_new(PhantomData, PhantomData)
+        vec_new(PhantomData)
     }
 }

@@ -1,3 +1,5 @@
+//! Illustrate usage of DST in capability.
+
 #![feature(generic_associated_types)]
 #![feature(allocator_api)]
 #![allow(non_camel_case_types)]
@@ -38,24 +40,24 @@ impl Capability for __alloc {
 }
 
 #[derive(Default)]
-struct vec_new<'alloc, T>(PhantomData<&'alloc ()>, PhantomData<T>);
+struct vec_new<T>(PhantomData<fn(T)>);
 
-impl<'_0, '_1, '_2, '_3, 'alloc, T> CxFnOnce<'_0, '_1, '_2, '_3, ()> for vec_new<'alloc, T> {
-    type Output = Vec<T, &'alloc dyn Allocator>;
-    type Context = MakeContext<(&'alloc __alloc,)>;
+impl<'_0, '_1, '_2, '_3, T> CxFnOnce<'_0, '_1, '_2, '_3, ()> for vec_new<T> {
+    type Output = Vec<T, SelectT<'_0, '_1, '_2, '_3, Shared, dyn Allocator, __alloc>>;
+    type Context = MakeContext<(Select<'_0, '_1, '_2, '_3, Shared, __alloc>,)>;
 
     fn cx_call_once(mut self, args: (), cx: Self::Context) -> Self::Output {
         self.cx_call_mut(args, cx)
     }
 }
 
-impl<'_0, '_1, '_2, '_3, 'alloc, T> CxFnMut<'_0, '_1, '_2, '_3, ()> for vec_new<'alloc, T> {
+impl<'_0, '_1, '_2, '_3, T> CxFnMut<'_0, '_1, '_2, '_3, ()> for vec_new<T> {
     fn cx_call_mut(&mut self, args: (), cx: Self::Context) -> Self::Output {
         self.cx_call(args, cx)
     }
 }
 
-impl<'_0, '_1, '_2, '_3, 'alloc, T> CxFn<'_0, '_1, '_2, '_3, ()> for vec_new<'alloc, T> {
+impl<'_0, '_1, '_2, '_3, T> CxFn<'_0, '_1, '_2, '_3, ()> for vec_new<T> {
     fn cx_call(&self, (): (), cx: Self::Context) -> Self::Output {
         let alloc = cx.extract_ref::<__alloc>();
 

@@ -1,3 +1,5 @@
+//! Illustrate desugaring of function with early-bound capability lifetime.
+
 #![feature(generic_associated_types)]
 #![allow(non_camel_case_types)]
 

@@ -1,6 +1,7 @@
+//! Illustrate how to locally add capability into the context.
+
 #![feature(generic_associated_types)]
 #![allow(non_camel_case_types)]
-#![allow(clippy::drop_ref)]
 
 use rust_context_emulation::prelude_input::*;
 
@@ -48,11 +49,11 @@ impl<'_0, '_1, '_2, '_3> CxFnOnce<'_0, '_1, '_2, '_3, ()> for do_work {
     type Output = ();
     type Context = Unify<(
         // Time for crazy type manipulation.
-        // We want to call `compare_to` locally, but we also set `hidden_str` capability locally.
+        // We want to call `compare_to`, but we also set `hidden_str` capability locally.
         // Simply unifying with `compare_to`'s context will request the capability,
-        // even though we know it is satisfied locally.
+        // even though we know it is satisfied by us.
         // A better way to handle situation is to remove `hidden_str` from `compare_to` context,
-        // but also must keep the rest.
+        // but also we must keep the rest.
         // The following invocation achieves the goal.
         LimitBy<
             <compare_to as CxFnOnce<'_0, '_1, '_2, '_3, (&'static str,)>>::Context,

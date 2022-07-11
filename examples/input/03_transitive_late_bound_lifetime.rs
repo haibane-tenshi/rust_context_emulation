@@ -1,3 +1,6 @@
+//! Illustrate construction of a function calling other functions
+//! which rely on late-bound capability lifetimes.
+
 #![feature(generic_associated_types)]
 #![allow(non_camel_case_types)]
 
@@ -98,10 +101,10 @@ impl<'_0, '_1, '_2, '_3> CxFnOnce<'_0, '_1, '_2, '_3, ()> for is_cake {
     type Output = bool;
 
     // However, here `compare_to` is invoked with reference to a local string.
-    // There is no way for us to get hold of its lifetime 'a at this point.
+    // There is no way for us to get hold of its lifetime `'local` at this point.
     // By current rulings around late-bound lifetimes there are only two possibilities:
-    // * 'a is entirely unrelated to capability lifetimes
-    // * 'a is identical to a specific capability lifetime
+    // * `'local` is entirely unrelated to capability lifetimes
+    // * `'local` is identical to a specific capability lifetime
     // `compare_to` clearly belongs to the first camp.
     // This means it is sufficient to supply *any* lifetime to construct correct context.
     type Context = <compare_to as CxFnOnce<'_0, '_1, '_2, '_3, (&'static str,)>>::Context;
@@ -212,13 +215,12 @@ impl<'_0, '_1, '_2, '_3> CxFn<'_0, '_1, '_2, '_3, ()> for is_pirates {
 #[derive(Default)]
 struct is_other;
 
-// This argument's lifetime cannot be late-bound.
-// We pass it into `compare_with` which enforces lifetime relationship between this lifetime
-// and lifetime of the relevant capability.
+// When we pass the argument into `compare_with`
+// it enforces lifetime relationship between this lifetime and lifetime of the relevant capability.
 // There are two ways to resolve it: introduce dependency between those two lifetimes,
 // making both early-bound, or propagate the relationship to keep it late-bound.
 // This function chooses the latter.
-// This is different from GAT variant because there with we first set `str`'s lifetime,
+// This is different from GAT variant because there we first set `str`'s lifetime,
 // but then it gets immediately overriden by parameters on `Context`.
 // We have to be more honest.
 impl<'_0, '_1, '_2, '_3>

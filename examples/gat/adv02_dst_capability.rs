@@ -1,3 +1,5 @@
+//! Illustrate usage of DST in capability.
+
 #![feature(generic_associated_types)]
 #![feature(allocator_api)]
 #![allow(non_camel_case_types)]

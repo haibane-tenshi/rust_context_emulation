@@ -1,3 +1,5 @@
+//! Illustrate process of unification and coercion when multiple functions are called.
+
 #![feature(generic_associated_types)]
 #![allow(non_camel_case_types)]
 
@@ -8,7 +10,7 @@ fn main() {
     let hidden_str = __hidden_str("aliens".to_string());
     let cx = EmptyStore::new().push(&data_store).push(&hidden_str);
 
-    let equal = useful_work::default().cx_call((), cx);
+    let equal = call_two::default().cx_call((), cx);
     assert!(equal);
 }
 
@@ -44,9 +46,9 @@ impl Capability for __hidden_str {
 
 // Do some questionable things.
 #[derive(Default)]
-struct useful_work;
+struct call_two;
 
-impl<'_0, '_1, '_2, '_3> CxFnOnce<'_0, '_1, '_2, '_3, ()> for useful_work {
+impl<'_0, '_1, '_2, '_3> CxFnOnce<'_0, '_1, '_2, '_3, ()> for call_two {
     type Output = bool;
     // Since we want to call two functions, we also need to satisfy context requirements for both.
     // This can be achieved by unifying their contexts.
@@ -61,23 +63,23 @@ impl<'_0, '_1, '_2, '_3> CxFnOnce<'_0, '_1, '_2, '_3, ()> for useful_work {
     }
 }
 
-impl<'_0, '_1, '_2, '_3> CxFnMut<'_0, '_1, '_2, '_3, ()> for useful_work {
+impl<'_0, '_1, '_2, '_3> CxFnMut<'_0, '_1, '_2, '_3, ()> for call_two {
     fn cx_call_mut(&mut self, args: (), cx: Self::Context) -> Self::Output {
         self.cx_call(args, cx)
     }
 }
 
-impl<'_0, '_1, '_2, '_3> CxFn<'_0, '_1, '_2, '_3, ()> for useful_work {
+impl<'_0, '_1, '_2, '_3> CxFn<'_0, '_1, '_2, '_3, ()> for call_two {
     fn cx_call(&self, (): (), mut cx: Self::Context) -> Self::Output {
         let first_item = {
             // However, the call site requires a bit of care.
             // Action is two-fold:
-            // 1. We reborrow the context.
+            // 1. Reborrow the context.
             //    It is effectively a "soft-clone" for references.
             //    Contexts are taken by value, so without doing this we would lose local context
             //    and with it ability to call other contextual functions.
-            // 2. We coerce the context.
-            //    Coercion molds local context into what the other function expects.
+            // 2. Coerce the context.
+            //    Coercion molds context into what the other function expects.
             //    Most notably, it can remove unnecessary capabilities and
             //    downgrade mutable references to shared ones.
             let cx = cx.reborrow().coerce();

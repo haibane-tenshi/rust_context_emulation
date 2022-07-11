@@ -84,3 +84,14 @@ pub mod prelude_input {
     pub use crate::reference::{Mutable, Shared};
     pub use crate::Capability;
 }
+
+/// Prelude for input-lifetime-based approach.
+pub mod prelude_hybrid {
+    pub use crate::context::store::{EmptyStore, HaveLocalReferenceTo, MakeContext, Push};
+    pub use crate::cxfn_trait::hybrid::{CxFn, CxFnMut, CxFnOnce};
+    pub use crate::indexed_tuple::{Index, Indexed};
+    pub use crate::lifetime::{Applicator, Select, SelectT};
+    pub use crate::ops::{Coerce, LimitBy, Reborrow2, Reborrow2Lifetime, Unify};
+    pub use crate::reference::{Mutable, Shared};
+    pub use crate::Capability;
+}

@@ -126,3 +126,14 @@ path = "examples/input/wildcard03_with_copy.rs"
 [[example]]
 name = "input_wildcard04"
 path = "examples/input/wildcard04_early_bound_liftime_flavors.rs"
+
+
+# Hybrid examples
+
+[[example]]
+name = "hybrid_wildcard02"
+path = "examples/hybrid/wildcard02_with_reborrow2.rs"
+
+[[example]]
+name = "hybrid_wildcard05"
+path = "examples/hybrid/wildcard05_mutable_to_shared_coercion.rs"

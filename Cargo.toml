@@ -7,6 +7,8 @@ edition = "2021"
 
 [dependencies]
 
+# Pure-GAT examples
+
 [[example]]
 name = "gat_01"
 path = "examples/gat/01_early_bound_lifetime.rs"
@@ -17,11 +19,11 @@ path = "examples/gat/02_late_bound_lifetime.rs"
 
 [[example]]
 name = "gat_03"
-path = "examples/gat/03_late_bound_external_lifetime.rs"
+path = "examples/gat/03_transitive_late_bound_lifetime.rs"
 
 [[example]]
 name = "gat_04"
-path = "examples/gat/04_cx_unification_and_split.rs"
+path = "examples/gat/04_cx_unification_and_coercion.rs"
 
 [[example]]
 name = "gat_05"
@@ -36,24 +38,34 @@ name = "gat_trait01"
 path = "examples/gat/trait01_emulation_basics.rs"
 
 [[example]]
-name = "gat_trait02"
-path = "examples/gat/trait02_using_wildcard.rs"
-
-[[example]]
-name = "gat_trait03"
-path = "examples/gat/trait03_dyn_cxfn.rs"
-
-[[example]]
-name = "gat_trait04"
-path = "examples/gat/trait04_using_copy_wildcard.rs"
-
-[[example]]
 name = "gat_adv01"
-path = "examples/gat/adv01_dst_capability.rs"
+path = "examples/gat/adv01_dyn_cxfn.rs"
 
 [[example]]
 name = "gat_adv02"
-path = "examples/gat/adv02_generic_capability.rs"
+path = "examples/gat/adv02_dst_capability.rs"
+
+[[example]]
+name = "gat_adv03"
+path = "examples/gat/adv03_generic_type_in_capability.rs"
+
+[[example]]
+name = "gat_adv04"
+path = "examples/gat/adv04_generic_lifetime_in_capability.rs"
+
+[[example]]
+name = "gat_wildcard01"
+path = "examples/gat/wildcard01_with_reborrow.rs"
+
+[[example]]
+name = "gat_wildcard02"
+path = "examples/gat/wildcard02_with_reborrow2.rs"
+
+[[example]]
+name = "gat_wildcard03"
+path = "examples/gat/wildcard03_with_copy.rs"
+
+# Pure-input examples
 
 [[example]]
 name = "input_01"
@@ -65,11 +77,11 @@ path = "examples/input/02_late_bound_lifetime.rs"
 
 [[example]]
 name = "input_03"
-path = "examples/input/03_late_bound_external_lifetime.rs"
+path = "examples/input/03_transitive_late_bound_lifetime.rs"
 
 [[example]]
 name = "input_04"
-path = "examples/input/04_cx_unification_and_split.rs"
+path = "examples/input/04_cx_unification_and_coercion.rs"
 
 [[example]]
 name = "input_05"
@@ -84,21 +96,33 @@ name = "input_trait01"
 path = "examples/input/trait01_emulation_basics.rs"
 
 [[example]]
-name = "input_trait02"
-path = "examples/input/trait02_using_wildcard.rs"
-
-[[example]]
-name = "input_trait03"
-path = "examples/input/trait03_dyn_cxfn.rs"
-
-[[example]]
-name = "input_trait04"
-path = "examples/input/trait04_using_copy_wildcard.rs"
-
-[[example]]
 name = "input_adv01"
-path = "examples/input/adv01_dst_capability.rs"
+path = "examples/input/adv01_dyn_cxfn.rs"
 
 [[example]]
 name = "input_adv02"
-path = "examples/input/adv02_generic_capability.rs"
+path = "examples/input/adv02_dst_capability.rs"
+
+[[example]]
+name = "input_adv03"
+path = "examples/input/adv03_generic_type_in_capability.rs"
+
+[[example]]
+name = "input_adv04"
+path = "examples/input/adv04_generic_lifetime_in_capability.rs"
+
+[[example]]
+name = "input_wildcard01"
+path = "examples/input/wildcard01_with_reborrow.rs"
+
+[[example]]
+name = "input_wildcard02"
+path = "examples/input/wildcard02_with_reborrow2.rs"
+
+[[example]]
+name = "input_wildcard03"
+path = "examples/input/wildcard03_with_copy.rs"
+
+[[example]]
+name = "input_wildcard04"
+path = "examples/input/wildcard04_early_bound_liftime_flavors.rs"

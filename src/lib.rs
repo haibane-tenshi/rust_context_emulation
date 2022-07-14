@@ -1,10 +1,19 @@
 //! This crate is an experimental emulation of Rust contexts.
 //!
-//! For high level overview of the approach refer to my blog post.
+//! ### There are three preludes, which one I choose?
 //!
-//! For usage examples refer to examples folder.
+//! Start with `prelude_input`.
+//! This is (presumably) the most robust approach.
+//! It fully supports shared references.
+//! Mutable references are only usable in concrete contexts, usage behind wildcard contexts is impossible.
 //!
-//! It is recommended to start with input-lifetime-based emulation.
+//! `prelude_gat` features GAT-based approach.
+//! It is as expressive as input-based one, but has subtle differences in how certain things are expressed
+//! (notably late-bound lifetimes).
+//!
+//! Use `prelude_hybrid` only if you want to experiment with mutable references behind wildcard contexts.
+//! Still, it doesn't feature full support, in particular mixing shared and mutable references is impossible.
+//! There are likely other limitations as well.
 
 #![feature(generic_associated_types)]
 #![allow(clippy::just_underscores_and_digits)]
